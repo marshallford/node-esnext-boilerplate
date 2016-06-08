@@ -1,2 +1,2 @@
 # node-esnext-boilerplate
-An opinionated, but ideally up to date NodeJS boilerplate with ESnext support
+An opinionated, but ideally up to date NodeJS project boilerplate with ESnext support

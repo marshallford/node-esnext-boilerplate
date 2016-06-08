@@ -1,0 +1,19 @@
+{
+  "name": "node-esnext-boilerplate",
+  "version": "1.0.0",
+  "description": "An opinionated, but ideally up to date NodeJS project boilerplate with ESnext support",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marshallford/node-esnext-boilerplate.git"
+  },
+  "author": "Marshall Ford <inbox@marshallford.me> (https://marshallford.me/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/marshallford/node-esnext-boilerplate/issues"
+  },
+  "homepage": "https://github.com/marshallford/node-esnext-boilerplate#readme"
+}
