@@ -2,16 +2,16 @@
   "name": "node-esnext-boilerplate",
   "version": "1.0.0",
   "description": "An opinionated, but ideally up to date NodeJS project boilerplate with ESnext support",
-  "main": "src/index.js",
+  "main": "src/server.js",
   "engines": {
     "node": ">=6.0.0"
   },
   "scripts": {
     "lint": "eslint src",
     "precommit": "eslint src",
-    "dev": "nodemon --exec babel-node src/index.js",
+    "dev": "nodemon --exec babel-node src/server.js",
     "prestart": "rimraf dist && BABEL_ENV=production babel --source-maps inline --copy-files src --out-dir dist",
-    "start": "node dist/index.js"
+    "start": "node dist/server.js"
   },
   "repository": {
     "type": "git",
@@ -29,7 +29,7 @@
     "babel-polyfill": "^6.9.1",
     "babel-preset-es2015": "^6.9.0",
     "babel-preset-stage-0": "^6.5.0",
-    "babel-root-import": "^3.2.2",
+    "babel-root-import": "^4.0.0",
     "eslint": "^2.11.1",
     "eslint-config-standard": "^5.3.1",
     "eslint-plugin-babel": "^3.2.0",
@@ -38,5 +38,10 @@
     "husky": "^0.11.4",
     "nodemon": "^1.9.2",
     "rimraf": "^2.5.2"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "cors": "^2.7.1",
+    "express": "^4.14.0"
   }
 }
