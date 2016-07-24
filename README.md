@@ -14,4 +14,3 @@ An opinionated, but ideally up to date NodeJS project boilerplate with ESnext su
 ## TODO & up in the air ideas
 
 * Testing framework
-* Cluster support
