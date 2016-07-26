@@ -5,9 +5,13 @@ import os from 'os'
 import app from '~/app'
 
 if (cluster.isMaster) {
-  os.cpus().forEach((cpu) => {
+  if (process.env.NODE_ENV === 'development') {
     cluster.fork()
-  })
+  } else {
+    os.cpus().forEach((cpu) => {
+      cluster.fork()
+    })
+  }
 
   cluster.on('online', (worker) => {
     winston.info(`worker ${worker.process.pid} is up`)
