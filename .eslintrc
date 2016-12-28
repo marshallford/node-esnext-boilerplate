@@ -11,7 +11,5 @@
   },
   "rules": {
     "comma-dangle": ["error", "always-multiline"],
-    "generator-star-spacing": "off",
-    "babel/generator-star-spacing": "warn",
   }
 }
