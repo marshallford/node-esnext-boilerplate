@@ -1,5 +1,12 @@
 {
-  "presets": ["es2015", "stage-0"],
+  "comments": false,
+  "presets": [
+    ["env", {
+      "targets": {
+        "node": "current"
+      }
+    }]
+  ],
   "plugins": [
     ["babel-root-import", { "rootPathSuffix": "src" }]
   ],
