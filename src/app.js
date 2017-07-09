@@ -2,7 +2,7 @@ import http from 'http' // HTTP Server
 import express, { Router } from 'express' // HTTP improvements
 import bodyParser from 'body-parser' // Parse JSON
 import cors from 'cors' // Cross-origin resource sharing
-import winston from 'winston' // Async logger
+import logger from '~/logger'
 
 // example route
 const exampleRoute = () => {
@@ -24,7 +24,7 @@ app.options('*', cors()) // https://github.com/expressjs/cors#enabling-cors-pre-
 // logging middleware
 if (process.env.LOG === 'true') {
   app.use((req, res, next) => {
-    winston.info(`${new Date().toISOString()} ${req.method} ${req.path}`)
+    logger.info(`${new Date().toISOString()} ${req.method} ${req.path}`)
     next()
   })
 }
@@ -38,7 +38,7 @@ app.use((req, res) => {
 })
 // 500
 app.use((err, req, res, next) => {
-  winston.error(err.stack)
+  logger.error(err.stack)
   res.status(500).json({ error: 'catch-all server error, check the logs' })
 })
 

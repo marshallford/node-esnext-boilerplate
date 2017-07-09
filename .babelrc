@@ -8,7 +8,8 @@
     }]
   ],
   "plugins": [
-    ["babel-root-import", { "rootPathSuffix": "src" }]
+    ["babel-root-import", { "rootPathSuffix": "src" }],
+    ["transform-object-rest-spread"]
   ],
   "env": {
     "production": {

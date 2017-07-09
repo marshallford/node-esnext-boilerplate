@@ -1,8 +1,8 @@
 import 'babel-polyfill' // https://babeljs.io/docs/usage/polyfill/
-import winston from 'winston'
 import cluster from 'cluster'
 import os from 'os'
 import app from '~/app'
+import logger from '~/logger'
 
 if (cluster.isMaster) {
   if (process.env.NODE_ENV === 'development') {
@@ -14,16 +14,16 @@ if (cluster.isMaster) {
   }
 
   cluster.on('online', (worker) => {
-    winston.info(`worker ${worker.process.pid} is up`)
+    logger.info(`worker ${worker.process.pid} is up`)
   })
 
   cluster.on('exit', (worker) => {
-    winston.error(`worker ${worker.process.pid} is down`)
+    logger.error(`worker ${worker.process.pid} is down`)
     cluster.fork()
   })
 } else {
   // start web server
   app.server.listen(process.env.PORT || 8080, () => {
-    winston.info(`starting server: http://localhost:${app.server.address().port} (${cluster.worker.process.pid})`)
+    logger.info(`starting server: http://localhost:${app.server.address().port} (${cluster.worker.process.pid})`)
   })
 }
