@@ -22,12 +22,20 @@ app.use(cors()) // https://github.com/expressjs/cors#simple-usage-enable-all-cor
 app.options('*', cors()) // https://github.com/expressjs/cors#enabling-cors-pre-flight
 
 // logging middleware
-if (process.env.LOG === 'true') {
-  app.use((req, res, next) => {
-    logger.info(`${new Date().toISOString()} ${req.method} ${req.path}`)
-    next()
-  })
-}
+app.use((req, res, next) => {
+  logger.verbose(`${new Date().toISOString()} ${req.method} ${req.path}`)
+  next()
+})
+
+// bodyParser error, 400
+app.use((err, req, res, next) => {
+  if (err instanceof SyntaxError && err.statusCode === 400) {
+    logger.error(err.stack)
+    res.status(400).json({ error: 'invalid json' })
+  } else {
+    next(err)
+  }
+})
 
 // define routes here, before catch-all functions, after cors setup and logging middlware
 app.use('/api/v1', exampleRoute())
