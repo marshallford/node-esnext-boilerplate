@@ -3,9 +3,18 @@ import cluster from 'cluster'
 import os from 'os'
 import app from '~/app'
 import logger from '~/logger'
+import config from '~/config'
+
+const startServer = (pid = 'N/A') => {
+  app.server.listen(config.port, () => {
+    logger.info(`starting server: http://localhost:${app.server.address().port} (${pid})`)
+  })
+}
 
 if (cluster.isMaster) {
-  if (process.env.NODE_ENV === 'development') {
+  if (config.disableClusterMode) {
+    startServer()
+  } else if (process.env.NODE_ENV === 'development') {
     cluster.fork()
   } else {
     os.cpus().forEach((cpu) => {
@@ -22,8 +31,5 @@ if (cluster.isMaster) {
     cluster.fork()
   })
 } else {
-  // start web server
-  app.server.listen(process.env.PORT || 8080, () => {
-    logger.info(`starting server: http://localhost:${app.server.address().port} (${cluster.worker.process.pid})`)
-  })
+  startServer(cluster.worker.process.pid)
 }
