@@ -1,19 +1,10 @@
-import http from 'http' // HTTP Server
+import http, { STATUS_CODES as HttpStatuses } from 'http' // HTTP Server
 import express, { Router } from 'express' // HTTP improvements
 import bodyParser from 'body-parser' // Parse JSON
 import cors from 'cors' // Cross-origin resource sharing
 import logger from '~/logger'
 
-// example route
-const exampleRoute = () => {
-  let example = Router()
-  example.get('/', (req, res) => {
-    return res.json({ message: 'Hello World' })
-  })
-  return example
-}
-
-// define web server
+// setup express
 const app = express()
 app.server = http.createServer(app)
 app.disable('x-powered-by') // https://github.com/helmetjs/hide-powered-by
@@ -23,31 +14,67 @@ app.options('*', cors()) // https://github.com/expressjs/cors#enabling-cors-pre-
 
 // logging middleware
 app.use((req, res, next) => {
-  logger.verbose(`${new Date().toISOString()} ${req.method} ${req.path}`)
+  logger.verbose(`${req.method} ${req.path}`)
   next()
 })
 
-// bodyParser error, 400
+// bodyParser error middleware
 app.use((err, req, res, next) => {
-  if (err instanceof SyntaxError && err.statusCode === 400) {
-    logger.error(err.stack)
-    res.status(400).json({ error: 'invalid json' })
+  if (err instanceof SyntaxError && err.type === 'entity.parse.failed') {
+    res.status(400).json({
+      error: HttpStatuses[400],
+      message: 'invalid json',
+    })
   } else {
     next(err)
   }
 })
 
-// define routes here, before catch-all functions, after cors setup and logging middlware
-app.use('/api/v1', exampleRoute())
+// NOTE: order is important, place routes before catch-all middleware
 
-// 404
+// example routes
+const usersRoute = () => {
+  const r = Router()
+  r.get('/', (req, res) => {
+    return res.json([{
+      firstName: 'Marshall',
+      lastName: 'Ford',
+    }])
+  })
+  return r
+}
+
+const echoRoute = () => {
+  const r = Router()
+  r.post('/', (req, res) => {
+    return res.json(req.body)
+  })
+  return r
+}
+
+const apiV1Route = () => {
+  const r = Router()
+  r.use('/users', usersRoute())
+  r.use('/echo', echoRoute())
+  return r
+}
+
+app.use('/api/v1', apiV1Route())
+
+// HTTP 404 middleware
 app.use((req, res) => {
-  res.status(404).json({ error: `cannot ${req.method} ${req.path}` })
+  res.status(404).json({
+    error: HttpStatuses[404],
+    message: `${req.method} ${req.path}` })
 })
-// 500
+
+// HTTP 500 middleware
 app.use((err, req, res, next) => {
-  logger.error(err.stack)
-  res.status(500).json({ error: 'catch-all server error, check the logs' })
+  logger.error(err)
+  res.status(500).json({
+    error: HttpStatuses[500],
+    message: 'check the logs!',
+  })
 })
 
 export default app

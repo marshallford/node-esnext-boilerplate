@@ -1,7 +1,7 @@
 {
   "parser": "babel-eslint",
   "extends" : [
-    "standard",
+    "standard"
   ],
   "plugins": [
     "babel"
@@ -10,6 +10,6 @@
     "node": true
   },
   "rules": {
-    "comma-dangle": ["error", "always-multiline"],
+    "comma-dangle": ["error", "always-multiline"]
   }
 }

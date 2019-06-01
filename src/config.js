@@ -1,6 +1,7 @@
 const config = {
   base: {
     port: process.env.APP_PORT || 8080,
+    logLevel: 'info',
   },
 }
 

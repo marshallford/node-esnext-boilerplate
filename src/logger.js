@@ -1,9 +1,14 @@
-import winston from 'winston'
+import winston, { format } from 'winston'
+import config from '~/config'
 
-const logger = new (winston.Logger)({
-  level: 'info',
+const logger = winston.createLogger({
+  level: config.logLevel,
+  format: format.combine(
+    format.timestamp(),
+    format.printf(info => `${info.timestamp} ${info.level}: ${info.message}`)
+  ),
   transports: [
-    new (winston.transports.Console)(),
+    new winston.transports.Console(),
   ],
 })
 
